@@ -11,38 +11,40 @@ import com.google.gson.Gson;
 public class Main {
 
 	public static void main(String[] args) {
-		String cadenaJson = leerUrl("https://raw.githubusercontent.com/IagoLast/pselect/master/data/provincias.json");
+		String url = "https://raw.githubusercontent.com/IagoLast/pselect/master/data/provincias.json";
+
+		String cadenaJson = leerUrl(url);
 
 		Provincias[] provincias = new Gson().fromJson(cadenaJson, Provincias[].class);
-		
+
 		for (Provincias provincia : provincias) {
 				String name = provincia.getNm();
-				int id = provincia.getId();
+				String id = provincia.getId();
 				System.out.println(id + ".- " + name);
 		}
-		
+
 		leerMunicipios();
 	}
-	
+
 	public static void leerMunicipios() {
 		Scanner sc = new Scanner(System.in);
-		
-		System.out.println("Elige el numero de la provincia de la que quieres ver sus municipios: ");
+		String url = "https://raw.githubusercontent.com/IagoLast/pselect/master/data/municipios.json";
+
+		System.out.println("Elige el numero de la provincia para ver sus municipios: ");
 		String codigo = sc.nextLine();
-		
-		String cadenaJson = leerUrl("https://raw.githubusercontent.com/IagoLast/pselect/master/data/municipios.json");
+
+		String cadenaJson = leerUrl(url);
 
 		Municipios[] municipios = new Gson().fromJson(cadenaJson, Municipios[].class);
-		
+
 		for (Municipios municipio : municipios) {
 			String nombre = municipio.getNm();
 			String id = municipio.getId();
 
-			if (codigo.equals(id)) {
-				System.out.println(id.substring(0, 2) + " " + nombre);
+			if (codigo.equals(id.substring(0, 2))) {
+				System.out.println(nombre);
 			}
-//			System.out.println(id.substring(0, 2) + " " + nombre);
-//			System.out.println(id + " " + nombre);
+
 		}
 	}
 
@@ -58,7 +60,7 @@ public class Main {
 
 			if (conn.getResponseCode() != 200) {
 				// si la respuesta del servidor es distinta al codigo 200 lanzaremos una
-				// Exception
+				// exception
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
 			}
 
